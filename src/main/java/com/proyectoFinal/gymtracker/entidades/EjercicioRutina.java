@@ -1,0 +1,30 @@
+package com.proyectoFinal.gymtracker.entidades;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class EjercicioRutina {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "dia_id", nullable = false)
+    private DiaRutina dia;
+
+    @ManyToOne
+    @JoinColumn(name = "ejercicio_id", nullable = false)
+    private Ejercicio ejercicio;
+
+    private Integer series;
+    private Integer repeticiones;
+}
