@@ -1,4 +1,4 @@
-package com.proyectoFinal.gymtracker.entidades;
+package com.proyectoFinal.gymtracker.Enum;
 
 public enum Rol {
     USUARIO,

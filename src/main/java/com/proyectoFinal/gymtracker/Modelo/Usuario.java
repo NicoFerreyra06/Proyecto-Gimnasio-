@@ -1,5 +1,6 @@
-package com.proyectoFinal.gymtracker.entidades;
+package com.proyectoFinal.gymtracker.Modelo;
 
+import com.proyectoFinal.gymtracker.Enum.Rol;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

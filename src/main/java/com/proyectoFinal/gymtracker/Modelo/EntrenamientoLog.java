@@ -1,4 +1,4 @@
-package com.proyectoFinal.gymtracker.entidades;
+package com.proyectoFinal.gymtracker.Modelo;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,13 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RecordPersonal {
+public class EntrenamientoLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,13 +24,13 @@ public class RecordPersonal {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
+    @Column(nullable = false)
+    private LocalDate fecha;
+
     @ManyToOne
-    @JoinColumn(name = "ejercicio_id", nullable = false)
-    private Ejercicio ejercicio;
+    @JoinColumn(name = "rutina_ejecutada_id")
+    private Rutina rutinaEjecutada;
 
-    @Column(nullable = false)
-    private Double pesoMaximo;
-
-    @Column(nullable = false)
-    private LocalDate fechaLogro;
+    @OneToMany(mappedBy = "entrenamientoLog", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MarcaEjercicio> marcas;
 }
