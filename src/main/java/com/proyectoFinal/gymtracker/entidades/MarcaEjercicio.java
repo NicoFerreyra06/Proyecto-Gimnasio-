@@ -17,6 +17,9 @@ public class MarcaEjercicio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Double pesoLevantado;
+    private Integer repeticionesLogradas;
+
     @ManyToOne
     @JoinColumn(name = "entrenamiento_log_id", nullable = false)
     private EntrenamientoLog entrenamientoLog;
@@ -25,6 +28,4 @@ public class MarcaEjercicio {
     @JoinColumn(name = "ejercicio_rutina_id", nullable = false)
     private EjercicioRutina ejercicioRutina;
 
-    private Double pesoLevantado;
-    private Integer repeticionesLogradas;
 }
