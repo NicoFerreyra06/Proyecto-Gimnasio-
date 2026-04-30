@@ -1,4 +1,4 @@
-package com.proyectoFinal.gymtracker.repositories;
+package com.proyectoFinal.gymtracker.Repositories;
 
 import com.proyectoFinal.gymtracker.Modelo.EjercicioRutina;
 import org.springframework.data.jpa.repository.JpaRepository;
