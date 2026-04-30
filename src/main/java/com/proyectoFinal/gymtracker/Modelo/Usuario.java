@@ -2,15 +2,13 @@ package com.proyectoFinal.gymtracker.Modelo;
 
 import com.proyectoFinal.gymtracker.Enum.Rol;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -27,16 +25,18 @@ public class Usuario {
     private String email;
 
     @Column(nullable = false)
+    @ToString.Exclude
     private String password;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Rol rol;
 
     private Double peso;
     private Double altura;
 
-    @Column(unique = true)
-    private String codigoAmigo; // UUID para compartir
+    @Column(unique = true, nullable = false, length = 36)
+    private String codigoAmigo; // id para compartir
 
     @ManyToMany
     @JoinTable(
@@ -56,7 +56,7 @@ public class Usuario {
     private Usuario entrenador;
 
     // Un entrenador puede tener muchos clientes
-    @OneToMany(mappedBy = "entrenador")
+    @OneToMany(mappedBy = "entrenador", fetch = FetchType.LAZY)
     private List<Usuario> clientes;
 
     // La racha se podría calcular dinámicamente con EntrenamientoLog,
@@ -64,6 +64,8 @@ public class Usuario {
     private Integer rachaActualDias;
     private Integer rachaMaximaDias;
 
+
+    @Transient //para que hibernatee no lo quiera guardar en db
     public Double getImc() {
         if (peso != null && altura != null && altura > 0) {
             return peso / (altura * altura);
