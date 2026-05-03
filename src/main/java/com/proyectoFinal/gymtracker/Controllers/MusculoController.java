@@ -17,13 +17,28 @@ public class MusculoController {
     private final MusculoService musculoService;
 
     @PostMapping
+    public ResponseEntity<Musculo> addMusculo(@RequestBody Musculo musculo){
+        return ResponseEntity.status(HttpStatus.CREATED).body(musculoService.addMusculo(musculo));
+    }
+
+    @PostMapping("/lote")
     public ResponseEntity<List<Musculo>> addMusculos(@RequestBody List<Musculo> musculos){
         return ResponseEntity.status(HttpStatus.CREATED).body(musculoService.addMusculos(musculos));
     }
 
-    @DeleteMapping("/{idMusculos}")
-    public ResponseEntity<Void> deleteMusculos(@PathVariable Long idMusculos){
-        musculoService.deleteMusculos(idMusculos);
+    @DeleteMapping("/{idMusculo}")
+    public ResponseEntity<Void> deleteMusculos(@PathVariable Long idMusculo){
+        musculoService.deleteMusculos(idMusculo);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{idMusculo}")
+    public ResponseEntity<Musculo> getMusculo(@PathVariable Long idMusculo){
+        return ResponseEntity.ok(musculoService.getMusculoById(idMusculo));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Musculo>> getMusculos(){
+        return ResponseEntity.status(HttpStatus.OK).body(musculoService.getMusculos());
     }
 }
