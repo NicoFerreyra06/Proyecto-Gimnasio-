@@ -1,10 +1,7 @@
 package com.proyectoFinal.gymtracker.Controllers;
 
-<<<<<<< HEAD
 
-=======
 import com.proyectoFinal.gymtracker.DTO.EjercicioRequest;
->>>>>>> 135b659 (ejercicio dto,controller y service)
 import com.proyectoFinal.gymtracker.Modelo.Ejercicio;
 import com.proyectoFinal.gymtracker.Services.EjercicioService;
 import lombok.RequiredArgsConstructor;
@@ -20,25 +17,6 @@ import java.util.List;
 public class EjercicioController {
 
     private final EjercicioService ejercicioService;
-
-<<<<<<< HEAD
-    @GetMapping
-    public ResponseEntity<List<Ejercicio>> getAll() {
-        return ResponseEntity.ok(ejercicioService.getAll());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Ejercicio> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(ejercicioService.getById(id));
-    }
-
-    @PostMapping
-    public ResponseEntity<Ejercicio> crear(@RequestBody Ejercicio ejercicio) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(ejercicioService.crearEjercicio(ejercicio));
-    }
-
-    //falta terminar
-=======
     @PostMapping
     public ResponseEntity<Ejercicio> addEjercicio(@RequestBody EjercicioRequest ejercicio){
         return ResponseEntity.status(HttpStatus.CREATED).body(ejercicioService.addEjercicio(ejercicio));
@@ -64,5 +42,4 @@ public class EjercicioController {
     public ResponseEntity<List<Ejercicio>> getAllEjercicio(){
         return ResponseEntity.status(HttpStatus.OK).body(ejercicioService.getEjercicios());
     }
->>>>>>> 135b659 (ejercicio dto,controller y service)
 }
