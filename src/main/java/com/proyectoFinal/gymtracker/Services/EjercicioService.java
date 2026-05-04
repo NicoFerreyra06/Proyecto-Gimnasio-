@@ -50,4 +50,15 @@ public class EjercicioService {
     public void deleteEjercicio(Long id) {
         ejercicioRepository.deleteById(id);
     }
+
+
+    //del repo
+    public List<Ejercicio> getByMusculo(Long musculoId) {
+        return ejercicioRepository.findByMusculo(musculoId);
+    }
+
+    public List<Ejercicio> getByMusculoPrincipal(Long musculoId) {
+        return ejercicioRepository.findByMusculoPrincipal(musculoId);
+    }
+
 }

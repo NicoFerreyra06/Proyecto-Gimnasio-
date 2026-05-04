@@ -17,15 +17,22 @@ import java.util.List;
 public class EjercicioController {
 
     private final EjercicioService ejercicioService;
-
     @PostMapping
-    public ResponseEntity<Ejercicio> addEjercicio(@RequestBody EjercicioRequest ejercicio) {
+    public ResponseEntity<Ejercicio> addEjercicio(@RequestBody EjercicioRequest ejercicio){
         return ResponseEntity.status(HttpStatus.CREATED).body(ejercicioService.addEjercicio(ejercicio));
     }
 
     @PostMapping("/lote")
-    public ResponseEntity<List<Ejercicio>> addEjercicios(@RequestBody List<EjercicioRequest> ejercicios) {
+    public ResponseEntity<List<Ejercicio>> addEjercicios(@RequestBody List<EjercicioRequest> ejercicios){
         return ResponseEntity.status(HttpStatus.CREATED).body(ejercicioService.addEjercicios(ejercicios));
+    }
+
+    //aca habia error porque endpoint y pathvariable eran distintos
+    //puse ambos en ejercicio y abajo agregue la busqueda x musculo
+    @DeleteMapping("/{idEjercicio}")
+    public ResponseEntity<Void> deleteEjercicio(@PathVariable Long idEjercicio) {
+        ejercicioService.deleteEjercicio(idEjercicio);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{idEjercicio}")
@@ -34,13 +41,21 @@ public class EjercicioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Ejercicio>> getAllEjercicios() {
-        return ResponseEntity.ok(ejercicioService.getAll());
+    public ResponseEntity<List<Ejercicio>> getAllEjercicio(){
+        return ResponseEntity.status(HttpStatus.OK).body(ejercicioService.getAll());
     }
 
-    @DeleteMapping("/{idEjercicio}")
-    public ResponseEntity<Void> deleteEjercicio(@PathVariable Long idEjercicio) {
-        ejercicioService.deleteEjercicio(idEjercicio);
-        return ResponseEntity.noContent().build();
+    //buscar por x muscuulo, sea el principal o con que exista en el ejercicio suficiente
+
+    @GetMapping("/porMusculo/{musculoId}")
+    public ResponseEntity<List<Ejercicio>> getByMusculo(@PathVariable Long musculoId) {
+        return ResponseEntity.ok(ejercicioService.getByMusculo(musculoId));
     }
+
+    @GetMapping("/porMusculoPrincipal/{musculoId}")
+    public ResponseEntity<List<Ejercicio>> getByMusculoPrincipal(@PathVariable Long musculoId) {
+        return ResponseEntity.ok(ejercicioService.getByMusculoPrincipal(musculoId));
+    }
+
+
 }
