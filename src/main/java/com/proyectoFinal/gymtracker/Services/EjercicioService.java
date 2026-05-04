@@ -1,6 +1,6 @@
 package com.proyectoFinal.gymtracker.Services;
 
-import com.proyectoFinal.gymtracker.DTO.EjercicioRequest;
+import com.proyectoFinal.gymtracker.DTO.Request.EjercicioRequest;
 import com.proyectoFinal.gymtracker.Modelo.Ejercicio;
 import com.proyectoFinal.gymtracker.Repositories.EjercicioRepository;
 import com.proyectoFinal.gymtracker.Repositories.MusculoRepository;
@@ -51,8 +51,6 @@ public class EjercicioService {
         ejercicioRepository.deleteById(id);
     }
 
-
-    //del repo
     public List<Ejercicio> getByMusculo(Long musculoId) {
         return ejercicioRepository.findByMusculo(musculoId);
     }

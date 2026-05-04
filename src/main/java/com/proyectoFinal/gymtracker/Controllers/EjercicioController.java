@@ -1,9 +1,10 @@
 package com.proyectoFinal.gymtracker.Controllers;
 
 
-import com.proyectoFinal.gymtracker.DTO.EjercicioRequest;
+import com.proyectoFinal.gymtracker.DTO.Request.EjercicioRequest;
 import com.proyectoFinal.gymtracker.Modelo.Ejercicio;
 import com.proyectoFinal.gymtracker.Services.EjercicioService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +19,15 @@ public class EjercicioController {
 
     private final EjercicioService ejercicioService;
     @PostMapping
-    public ResponseEntity<Ejercicio> addEjercicio(@RequestBody EjercicioRequest ejercicio){
+    public ResponseEntity<Ejercicio> addEjercicio(@Valid @RequestBody EjercicioRequest ejercicio){
         return ResponseEntity.status(HttpStatus.CREATED).body(ejercicioService.addEjercicio(ejercicio));
     }
 
     @PostMapping("/lote")
-    public ResponseEntity<List<Ejercicio>> addEjercicios(@RequestBody List<EjercicioRequest> ejercicios){
+    public ResponseEntity<List<Ejercicio>> addEjercicios(@Valid @RequestBody List<EjercicioRequest> ejercicios){
         return ResponseEntity.status(HttpStatus.CREATED).body(ejercicioService.addEjercicios(ejercicios));
     }
 
-    //aca habia error porque endpoint y pathvariable eran distintos
-    //puse ambos en ejercicio y abajo agregue la busqueda x musculo
     @DeleteMapping("/{idEjercicio}")
     public ResponseEntity<Void> deleteEjercicio(@PathVariable Long idEjercicio) {
         ejercicioService.deleteEjercicio(idEjercicio);
@@ -45,7 +44,7 @@ public class EjercicioController {
         return ResponseEntity.status(HttpStatus.OK).body(ejercicioService.getAll());
     }
 
-    //buscar por x muscuulo, sea el principal o con que exista en el ejercicio suficiente
+    //buscar por x musculo, sea el principal o con que exista en el ejercicio suficiente
 
     @GetMapping("/porMusculo/{musculoId}")
     public ResponseEntity<List<Ejercicio>> getByMusculo(@PathVariable Long musculoId) {
