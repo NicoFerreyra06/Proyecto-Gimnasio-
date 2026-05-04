@@ -3,7 +3,7 @@ package com.proyectoFinal.gymtracker.Modelo;
 import com.proyectoFinal.gymtracker.Enum.Rol;
 import jakarta.persistence.*;
 import lombok.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 @Entity
@@ -26,6 +26,7 @@ public class Usuario {
 
     @Column(nullable = false)
     @ToString.Exclude
+    @JsonIgnore
     private String password;
 
     @Column(nullable = false)
@@ -39,11 +40,13 @@ public class Usuario {
     private String codigoAmigo; // id para compartir
 
     @ManyToMany
+
     @JoinTable(
         name = "amigos",
         joinColumns = @JoinColumn(name = "usuario_id"),
         inverseJoinColumns = @JoinColumn(name = "amigo_id")
     )
+    @JsonIgnore
     private List<Usuario> amigos;
 
     @ManyToOne
@@ -53,9 +56,11 @@ public class Usuario {
     // Relación para que un usuario pueda tener un entrenador
     @ManyToOne
     @JoinColumn(name = "entrenador_id")
+    @JsonIgnore
     private Usuario entrenador;
 
     // Un entrenador puede tener muchos clientes
+    @JsonIgnore
     @OneToMany(mappedBy = "entrenador", fetch = FetchType.LAZY)
     private List<Usuario> clientes;
 
