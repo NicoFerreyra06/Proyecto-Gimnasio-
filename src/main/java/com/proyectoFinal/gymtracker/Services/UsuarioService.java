@@ -17,7 +17,19 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
-    public Usuario registrar(Usuario usuario) {
+
+    private UsuarioResponse toResponse(Usuario usuario) {
+        return new UsuarioResponse(
+                usuario.getId(),
+                usuario.getUsername(),
+                usuario.getEmail(),
+                usuario.getRol(),
+                usuario.getCodigoAmigo()
+        );
+    }
+
+
+    public UsuarioResponse registrar(Usuario usuario) {
 
         if (usuario.getEmail() == null || usuario.getEmail().isEmpty()) {
             throw new RuntimeException("Email obligatorio");
