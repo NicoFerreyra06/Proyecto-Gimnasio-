@@ -1,5 +1,6 @@
 package com.proyectoFinal.gymtracker.Modelo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +27,7 @@ public class DiaRutina {
 
     @ManyToOne
     @JoinColumn(name = "rutina_id", nullable = false)
+    @JsonIgnore
     private Rutina rutina;
 
     @OneToMany(mappedBy = "dia", cascade = CascadeType.ALL, orphanRemoval = true)
