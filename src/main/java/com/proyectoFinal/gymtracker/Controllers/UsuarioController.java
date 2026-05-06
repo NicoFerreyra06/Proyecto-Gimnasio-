@@ -29,6 +29,6 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public ResponseEntity<UsuarioResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-        return ResponseEntity.ok(usuarioService.login(loginRequest));
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.login(loginRequest));
     }
 }
