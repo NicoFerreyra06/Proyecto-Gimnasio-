@@ -1,6 +1,7 @@
 package com.proyectoFinal.gymtracker.Services;
 
 import com.proyectoFinal.gymtracker.DTO.Request.EjercicioRequest;
+import com.proyectoFinal.gymtracker.DTO.Response.EjercicioResponse;
 import com.proyectoFinal.gymtracker.Modelo.Ejercicio;
 import com.proyectoFinal.gymtracker.Repositories.EjercicioRepository;
 import com.proyectoFinal.gymtracker.Repositories.MusculoRepository;
@@ -16,17 +17,29 @@ public class EjercicioService {
     private final EjercicioRepository ejercicioRepository;
     private final MusculoRepository musculoRepository;
 
-    public Ejercicio addEjercicio(EjercicioRequest request) {
+    private EjercicioResponse toResponse(Ejercicio ejercicio) {
+        return EjercicioResponse.builder()
+                .id(ejercicio.getId())
+                .nombre(ejercicio.getNombre())
+                .descripcion(ejercicio.getDescripcion())
+                .musculosPrincipales(ejercicio.getMusculosPrincipales())
+                .musculosSecundarios(ejercicio.getMusculosSecundarios())
+                .build();
+    }
+
+    public EjercicioResponse addEjercicio(EjercicioRequest request) {
         Ejercicio ejercicio = Ejercicio.builder()
                 .nombre(request.getNombre())
                 .descripcion(request.getDescripcion())
                 .musculosPrincipales(musculoRepository.findAllById(request.getMusculoPrincipalId()))
                 .musculosSecundarios(musculoRepository.findAllById(request.getMusculoSecundarioId()))
                 .build();
-        return ejercicioRepository.save(ejercicio);
+
+        Ejercicio saved = ejercicioRepository.save(ejercicio);
+        return toResponse(saved);
     }
 
-    public List<Ejercicio> addEjercicios(List<EjercicioRequest> requests) {
+    public List<EjercicioResponse> addEjercicios(List<EjercicioRequest> requests) {
         List<Ejercicio> ejercicios = requests.stream()
                 .map(request -> Ejercicio.builder()
                         .nombre(request.getNombre())
@@ -35,7 +48,10 @@ public class EjercicioService {
                         .musculosSecundarios(musculoRepository.findAllById(request.getMusculoSecundarioId()))
                         .build()
                 ).toList();
-        return ejercicioRepository.saveAll(ejercicios);
+
+        return ejercicioRepository.saveAll(ejercicios).stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     public Ejercicio getById(Long id) {

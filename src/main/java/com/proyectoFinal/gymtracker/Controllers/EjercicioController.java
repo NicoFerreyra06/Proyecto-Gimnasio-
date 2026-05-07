@@ -2,6 +2,7 @@ package com.proyectoFinal.gymtracker.Controllers;
 
 
 import com.proyectoFinal.gymtracker.DTO.Request.EjercicioRequest;
+import com.proyectoFinal.gymtracker.DTO.Response.EjercicioResponse;
 import com.proyectoFinal.gymtracker.Modelo.Ejercicio;
 import com.proyectoFinal.gymtracker.Services.EjercicioService;
 import jakarta.validation.Valid;
@@ -19,12 +20,12 @@ public class EjercicioController {
 
     private final EjercicioService ejercicioService;
     @PostMapping
-    public ResponseEntity<Ejercicio> addEjercicio(@Valid @RequestBody EjercicioRequest ejercicio){
+    public ResponseEntity<EjercicioResponse> addEjercicio(@Valid @RequestBody EjercicioRequest ejercicio){
         return ResponseEntity.status(HttpStatus.CREATED).body(ejercicioService.addEjercicio(ejercicio));
     }
 
     @PostMapping("/lote")
-    public ResponseEntity<List<Ejercicio>> addEjercicios(@Valid @RequestBody List<EjercicioRequest> ejercicios){
+    public ResponseEntity<List<EjercicioResponse>> addEjercicios(@Valid @RequestBody List<EjercicioRequest> ejercicios){
         return ResponseEntity.status(HttpStatus.CREATED).body(ejercicioService.addEjercicios(ejercicios));
     }
 
