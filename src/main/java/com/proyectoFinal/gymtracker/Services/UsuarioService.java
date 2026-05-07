@@ -21,7 +21,6 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
-
     private UsuarioResponse toResponse(Usuario usuario) {
         return UsuarioResponse.builder()
                 .id(usuario.getId())
