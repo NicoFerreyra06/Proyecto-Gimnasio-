@@ -54,25 +54,33 @@ public class EjercicioService {
                 .toList();
     }
 
-    public Ejercicio getById(Long id) {
-        return ejercicioRepository.findById(id)
+    public EjercicioResponse getById(Long id) {
+        Ejercicio saved = ejercicioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Ejercicio no encontrado"));
+
+        return toResponse(saved);
     }
 
-    public List<Ejercicio> getAll() {
-        return ejercicioRepository.findAll();
+    public List<EjercicioResponse> getAll() {
+        return ejercicioRepository.findAll().stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     public void deleteEjercicio(Long id) {
         ejercicioRepository.deleteById(id);
     }
 
-    public List<Ejercicio> getByMusculo(Long musculoId) {
-        return ejercicioRepository.findByMusculo(musculoId);
+    public List<EjercicioResponse> getByMusculo(Long musculoId) {
+        return ejercicioRepository.findByMusculo(musculoId).stream()
+                .map(this::toResponse)
+                .toList();
     }
 
-    public List<Ejercicio> getByMusculoPrincipal(Long musculoId) {
-        return ejercicioRepository.findByMusculoPrincipal(musculoId);
+    public List<EjercicioResponse> getByMusculoPrincipal(Long musculoId) {
+        return ejercicioRepository.findByMusculoPrincipal(musculoId).stream()
+                .map(this::toResponse)
+                .toList();
     }
 
 }
