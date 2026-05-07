@@ -36,24 +36,24 @@ public class EjercicioController {
     }
 
     @GetMapping("/{idEjercicio}")
-    public ResponseEntity<Ejercicio> getEjercicio(@PathVariable Long idEjercicio) {
+    public ResponseEntity<EjercicioResponse> getEjercicio(@PathVariable Long idEjercicio) {
         return ResponseEntity.ok(ejercicioService.getById(idEjercicio));
     }
 
     @GetMapping
-    public ResponseEntity<List<Ejercicio>> getAllEjercicio(){
+    public ResponseEntity<List<EjercicioResponse>> getAllEjercicio(){
         return ResponseEntity.status(HttpStatus.OK).body(ejercicioService.getAll());
     }
 
     //buscar por x musculo, sea el principal o con que exista en el ejercicio suficiente
 
     @GetMapping("/porMusculo/{musculoId}")
-    public ResponseEntity<List<Ejercicio>> getByMusculo(@PathVariable Long musculoId) {
+    public ResponseEntity<List<EjercicioResponse>> getByMusculo(@PathVariable Long musculoId) {
         return ResponseEntity.ok(ejercicioService.getByMusculo(musculoId));
     }
 
     @GetMapping("/porMusculoPrincipal/{musculoId}")
-    public ResponseEntity<List<Ejercicio>> getByMusculoPrincipal(@PathVariable Long musculoId) {
+    public ResponseEntity<List<EjercicioResponse>> getByMusculoPrincipal(@PathVariable Long musculoId) {
         return ResponseEntity.ok(ejercicioService.getByMusculoPrincipal(musculoId));
     }
 

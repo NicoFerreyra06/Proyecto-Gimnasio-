@@ -1,6 +1,7 @@
 package com.proyectoFinal.gymtracker.Controllers;
 
 import com.proyectoFinal.gymtracker.DTO.Request.RutinaRequest;
+import com.proyectoFinal.gymtracker.DTO.Response.RutinaResponse;
 import com.proyectoFinal.gymtracker.Modelo.Rutina;
 import com.proyectoFinal.gymtracker.Services.RutinaService;
 import jakarta.validation.Valid;
@@ -17,13 +18,13 @@ public class RutinaController {
     private final RutinaService rutinaService;
 
     @PostMapping
-    public ResponseEntity<Rutina> createRutina(@Valid @RequestBody RutinaRequest rutinaRequest){
+    public ResponseEntity<RutinaResponse> createRutina(@Valid @RequestBody RutinaRequest rutinaRequest){
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(rutinaService.createRutina(rutinaRequest));
     }
 
     @GetMapping("/{idRutina}")
-    public ResponseEntity<Rutina> getRutinaById(@RequestParam Long idRutina){
+    public ResponseEntity<RutinaResponse> getRutinaById(@PathVariable Long idRutina){
         return ResponseEntity.status(HttpStatus.OK).body(rutinaService.getRutinaById(idRutina));
     }
 

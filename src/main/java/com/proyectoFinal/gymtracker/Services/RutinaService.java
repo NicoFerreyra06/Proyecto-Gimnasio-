@@ -1,6 +1,9 @@
 package com.proyectoFinal.gymtracker.Services;
 
 import com.proyectoFinal.gymtracker.DTO.Request.RutinaRequest;
+import com.proyectoFinal.gymtracker.DTO.Response.DiaRutinaResponse;
+import com.proyectoFinal.gymtracker.DTO.Response.EjercicioRutinaResponse;
+import com.proyectoFinal.gymtracker.DTO.Response.RutinaResponse;
 import com.proyectoFinal.gymtracker.Enum.Rol;
 import com.proyectoFinal.gymtracker.Modelo.*;
 import com.proyectoFinal.gymtracker.Repositories.EjercicioRepository;
@@ -23,7 +26,7 @@ public class RutinaService {
     private final EjercicioRepository ejercicioRepository;
 
     @Transactional
-    public Rutina createRutina(RutinaRequest rutinaRequest) {
+    public RutinaResponse createRutina(RutinaRequest rutinaRequest) {
         Usuario creador = usuarioRepository.findById(rutinaRequest.getCreadorId())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
@@ -61,12 +64,14 @@ public class RutinaService {
                     }).toList();
             rutina.setDias(diaRutinas);
         }
-        return rutinaRepository.save(rutina);
+        Rutina rutinaSaved = rutinaRepository.save(rutina);
+        return mapRutinaResponse(rutinaSaved);
     }
 
-    public Rutina getRutinaById(Long idRutina) {
-        return rutinaRepository.findById(idRutina)
+    public RutinaResponse getRutinaById(Long idRutina) {
+        Rutina rutinaSaved = rutinaRepository.findById(idRutina)
                 .orElseThrow(() -> new RuntimeException("Rutina no encontrada"));
+        return mapRutinaResponse(rutinaSaved);
     }
 
     public void deleteRutina(Long idRutina) {
@@ -80,6 +85,38 @@ public class RutinaService {
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException("No se puede eliminar la rutina porque actualmente está asignada a un usuario o existe en un historial de entrenamiento.");
         }
+    }
+
+    // === Metodos auxiliares ===
+
+    private RutinaResponse mapRutinaResponse(Rutina rutina){
+        return RutinaResponse.builder()
+                .id(rutina.getId())
+                .creadorId(rutina.getCreador() != null ? rutina.getCreador().getId() : null)
+                .nombre(rutina.getNombre())
+                .tokenCompartir(rutina.getTokenCompartir())
+                .precio(rutina.getPrecio() > 0 ? rutina.getPrecio() : null)
+                .diaRutinas(rutina.getDias().stream()
+                        .map(this::mapToDiaRutinaResponse).toList())
+                .build();
+    }
+
+    private DiaRutinaResponse mapToDiaRutinaResponse(DiaRutina diaRutina){
+        return DiaRutinaResponse.builder()
+                .id(diaRutina.getId())
+                .diaDeLaSemana(diaRutina.getDiaDeLaSemana())
+                .ejercicioRutinas(diaRutina.getEjercicios().stream()
+                        .map(this::mapToEjercicioRutinaResponse).toList())
+                .build();
+    }
+
+    private EjercicioRutinaResponse mapToEjercicioRutinaResponse(EjercicioRutina ejercicioRutina){
+        return EjercicioRutinaResponse.builder()
+                .id(ejercicioRutina.getId())
+                .ejercicioId(ejercicioRutina.getEjercicio().getId())
+                .nombreEjercicio(ejercicioRutina.getEjercicio().getNombre())
+                .series(ejercicioRutina.getSeries())
+                .repeticiones(ejercicioRutina.getRepeticiones()).build();
     }
 
     private void validarPrecioYrol (RutinaRequest rutinaRequest, Usuario creador) {
