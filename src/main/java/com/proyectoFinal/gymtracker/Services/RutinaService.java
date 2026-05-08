@@ -6,6 +6,7 @@ import com.proyectoFinal.gymtracker.DTO.Response.EjercicioRutinaResponse;
 import com.proyectoFinal.gymtracker.DTO.Response.RutinaResponse;
 import com.proyectoFinal.gymtracker.Enum.Rol;
 import com.proyectoFinal.gymtracker.Modelo.*;
+import com.proyectoFinal.gymtracker.Repositories.DiaRutinaRepository;
 import com.proyectoFinal.gymtracker.Repositories.EjercicioRepository;
 import com.proyectoFinal.gymtracker.Repositories.RutinaRepository;
 import com.proyectoFinal.gymtracker.Repositories.UsuarioRepository;
@@ -14,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +27,7 @@ public class RutinaService {
     private final RutinaRepository rutinaRepository;
     private final UsuarioRepository usuarioRepository;
     private final EjercicioRepository ejercicioRepository;
+    private final DiaRutinaRepository diaRutinaRepository;
 
     @Transactional
     public RutinaResponse createRutina(RutinaRequest rutinaRequest) {
@@ -77,6 +81,19 @@ public class RutinaService {
     public List<RutinaResponse> getAllRutinas(){
         return rutinaRepository.findAll().stream().map(this::mapRutinaResponse).toList();
     }
+
+    //para ver la rutina de hoy
+    public DiaRutinaResponse getDiaRutinaActual(Long idUsuario) {
+        Usuario u = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        if (u.getRutinaActiva() == null) throw new RuntimeException("No tiene rutina activa");
+        DayOfWeek hoy = LocalDate.now().getDayOfWeek();
+        DiaRutina dia = diaRutinaRepository
+                .findByRutinaIdAndDiaDeLaSemana(u.getRutinaActiva().getId(), hoy)
+                .orElseThrow(() -> new RuntimeException("La rutina no tiene día configurado para hoy"));
+        return mapToDiaRutinaResponse(dia);
+    }
+
 
     public void deleteRutina(Long idRutina) {
         if (!rutinaRepository.existsById(idRutina)) {
@@ -132,4 +149,7 @@ public class RutinaService {
             throw new RuntimeException("Solo los usuarios con rol ENTRENADOR pueden asignar un precio a las rutinas.");
         }
     }
+
+
+
 }

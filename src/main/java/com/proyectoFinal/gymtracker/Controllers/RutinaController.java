@@ -1,6 +1,7 @@
 package com.proyectoFinal.gymtracker.Controllers;
 
 import com.proyectoFinal.gymtracker.DTO.Request.RutinaRequest;
+import com.proyectoFinal.gymtracker.DTO.Response.DiaRutinaResponse;
 import com.proyectoFinal.gymtracker.DTO.Response.RutinaResponse;
 import com.proyectoFinal.gymtracker.DTO.Response.UsuarioResponse;
 import com.proyectoFinal.gymtracker.Services.RutinaService;
@@ -46,6 +47,11 @@ public class RutinaController {
     @PutMapping("/{idUsuario}/rutina-activa/{idRutina}")
     public ResponseEntity<UsuarioResponse> activarRutina(@PathVariable Long idUsuario, @PathVariable Long idRutina) {
         return ResponseEntity.ok(usuarioService.activarRutina(idUsuario, idRutina));
+    }
+
+    @GetMapping("/usuario/{idUsuario}/hoy")
+    public ResponseEntity<DiaRutinaResponse> getDiaActual(@PathVariable Long idUsuario) {
+        return ResponseEntity.ok(rutinaService.getDiaRutinaActual(idUsuario));
     }
 
 }
