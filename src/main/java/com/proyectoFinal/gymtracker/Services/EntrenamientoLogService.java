@@ -6,6 +6,7 @@ import com.proyectoFinal.gymtracker.DTO.Response.MarcaEjercicioResponse;
 import com.proyectoFinal.gymtracker.Modelo.*;
 import com.proyectoFinal.gymtracker.Repositories.*;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class EntrenamientoLogService {
     private final EjercicioRutinaRepository ejercicioRutinaRepository;
 
     @Transactional
-    public EntrenamientoLogResponse addEntrenamientoLog (EntrenamientoLogRequest entrenamientoLogRequest) {
+    public EntrenamientoLogResponse addEntrenamientoLog (@Valid EntrenamientoLogRequest entrenamientoLogRequest) {
         Usuario user = usuarioRepository.findById(entrenamientoLogRequest.getIdUsuario())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
@@ -57,6 +58,22 @@ public class EntrenamientoLogService {
 
         return mapEntrenamientoLogResponse(entrenamientoLog);
     }
+
+    public List<EntrenamientoLogResponse> getEntrenamientoLogByUsuarioId(Long idUsuario) {
+        Usuario usuario =  usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        List<EntrenamientoLog> entrenamientosUsuario = entrenamientoLogRepository.findByUsuarioId(usuario.getId());
+
+        if (entrenamientosUsuario.isEmpty()) {
+            return List.of();
+        }
+
+        return entrenamientosUsuario.stream()
+                .map(this::mapEntrenamientoLogResponse).toList();
+    }
+
+    // === Metodos auxiliares ===
 
     private EntrenamientoLogResponse mapEntrenamientoLogResponse(EntrenamientoLog entrenamientoLog) {
         return EntrenamientoLogResponse.builder()

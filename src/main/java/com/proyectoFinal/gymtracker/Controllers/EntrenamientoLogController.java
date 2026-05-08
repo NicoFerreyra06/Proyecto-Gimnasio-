@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/entrenamientos")
 @RequiredArgsConstructor
@@ -25,5 +27,11 @@ public class EntrenamientoLogController {
     public ResponseEntity<EntrenamientoLogResponse> getEntrenamientoLogById(@PathVariable Long idEntrenamiento){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(entrenamientoLogService.getEntrenamientoLogById(idEntrenamiento));
+    }
+
+    @GetMapping("/usuario/{idUsuario}")
+    public ResponseEntity<List<EntrenamientoLogResponse>> getEntrenamientoLogByUsuario(@PathVariable Long idUsuario){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(entrenamientoLogService.getEntrenamientoLogByUsuarioId(idUsuario));
     }
 }
