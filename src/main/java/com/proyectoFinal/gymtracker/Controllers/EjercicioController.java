@@ -19,6 +19,7 @@ import java.util.List;
 public class EjercicioController {
 
     private final EjercicioService ejercicioService;
+
     @PostMapping
     public ResponseEntity<EjercicioResponse> addEjercicio(@Valid @RequestBody EjercicioRequest ejercicio){
         return ResponseEntity.status(HttpStatus.CREATED).body(ejercicioService.addEjercicio(ejercicio));

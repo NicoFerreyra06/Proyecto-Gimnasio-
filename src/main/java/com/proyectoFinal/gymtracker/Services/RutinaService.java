@@ -74,6 +74,10 @@ public class RutinaService {
         return mapRutinaResponse(rutinaSaved);
     }
 
+    public List<RutinaResponse> getAllRutinas(){
+        return rutinaRepository.findAll().stream().map(this::mapRutinaResponse).toList();
+    }
+
     public void deleteRutina(Long idRutina) {
         if (!rutinaRepository.existsById(idRutina)) {
             throw new RuntimeException("La rutina no existe");
@@ -96,8 +100,8 @@ public class RutinaService {
                 .nombre(rutina.getNombre())
                 .tokenCompartir(rutina.getTokenCompartir())
                 .precio(rutina.getPrecio() > 0 ? rutina.getPrecio() : null)
-                .diaRutinas(rutina.getDias().stream()
-                        .map(this::mapToDiaRutinaResponse).toList())
+                .diaRutinas(rutina.getDias() != null ? rutina.getDias().stream()
+                        .map(this::mapToDiaRutinaResponse).toList() : List.of())
                 .build();
     }
 
@@ -105,8 +109,8 @@ public class RutinaService {
         return DiaRutinaResponse.builder()
                 .id(diaRutina.getId())
                 .diaDeLaSemana(diaRutina.getDiaDeLaSemana())
-                .ejercicioRutinas(diaRutina.getEjercicios().stream()
-                        .map(this::mapToEjercicioRutinaResponse).toList())
+                .ejercicioRutinas(diaRutina.getEjercicios() != null ? diaRutina.getEjercicios().stream()
+                        .map(this::mapToEjercicioRutinaResponse).toList() : List.of())
                 .build();
     }
 

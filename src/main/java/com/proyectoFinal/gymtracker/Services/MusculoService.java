@@ -3,6 +3,7 @@ package com.proyectoFinal.gymtracker.Services;
 import com.proyectoFinal.gymtracker.Modelo.Musculo;
 import com.proyectoFinal.gymtracker.Repositories.MusculoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +23,12 @@ public class MusculoService {
     }
 
     public void deleteMusculos(Long idMusculo){
-        musculoRepository.deleteById(idMusculo);
+        try{
+            musculoRepository.deleteById(idMusculo);
+        } catch (DataIntegrityViolationException e){
+            throw new RuntimeException("No se puede eliminar el musculo porque esta relacionado a ejercicios");
+        }
+
     }
 
     public Musculo getMusculoById(Long idMusculo){
