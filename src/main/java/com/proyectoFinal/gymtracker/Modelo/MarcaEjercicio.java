@@ -1,5 +1,6 @@
 package com.proyectoFinal.gymtracker.Modelo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,7 @@ public class MarcaEjercicio {
 
     @ManyToOne
     @JoinColumn(name = "entrenamiento_log_id", nullable = false)
+    @JsonIgnore
     private EntrenamientoLog entrenamientoLog;
 
     @ManyToOne
