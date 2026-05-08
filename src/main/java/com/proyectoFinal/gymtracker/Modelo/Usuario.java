@@ -4,6 +4,8 @@ import com.proyectoFinal.gymtracker.Enum.Rol;
 import jakarta.persistence.*;
 import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -52,6 +54,9 @@ public class Usuario {
     @ManyToOne
     @JoinColumn(name = "rutina_activa_id")
     private Rutina rutinaActiva;
+
+    private LocalDate rutinaActivaDesde; //necesario para a futuro ver progreso desde que uso tal rutina
+
 
     // Relación para que un usuario pueda tener un entrenador
     @ManyToOne

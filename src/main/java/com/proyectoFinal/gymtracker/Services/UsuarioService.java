@@ -3,23 +3,25 @@ package com.proyectoFinal.gymtracker.Services;
 import com.proyectoFinal.gymtracker.DTO.Request.LoginRequest;
 import com.proyectoFinal.gymtracker.DTO.Request.UsuarioRequest;
 import com.proyectoFinal.gymtracker.DTO.Response.UsuarioResponse;
+import com.proyectoFinal.gymtracker.Modelo.Rutina;
 import com.proyectoFinal.gymtracker.Modelo.Usuario;
+import com.proyectoFinal.gymtracker.Repositories.RutinaRepository;
 import com.proyectoFinal.gymtracker.Repositories.UsuarioRepository;
 import com.proyectoFinal.gymtracker.Enum.Rol;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class UsuarioService {
 
-
     private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final RutinaRepository rutinaRepository;
 
     private UsuarioResponse toResponse(Usuario usuario) {
         return UsuarioResponse.builder()
@@ -73,7 +75,18 @@ public class UsuarioService {
         if (!usuario.getPassword().equals(loginRequest.getPassword())) {
             throw new RuntimeException("Password incorrecta");
         }
-
         return toResponse(usuario);
     }
+
+    @Transactional
+    public UsuarioResponse activarRutina(Long idUsuario, Long idRutina) {
+        Usuario u = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Rutina r = rutinaRepository.findById(idRutina)
+                .orElseThrow(() -> new RuntimeException("Rutina no encontrada"));
+        u.setRutinaActiva(r);
+        u.setRutinaActivaDesde(LocalDate.now());
+        return toResponse(usuarioRepository.save(u));
+    }
+
 }

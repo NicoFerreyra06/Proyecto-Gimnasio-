@@ -3,7 +3,6 @@ package com.proyectoFinal.gymtracker.Controllers;
 
 import com.proyectoFinal.gymtracker.DTO.Request.EjercicioRequest;
 import com.proyectoFinal.gymtracker.DTO.Response.EjercicioResponse;
-import com.proyectoFinal.gymtracker.Modelo.Ejercicio;
 import com.proyectoFinal.gymtracker.Services.EjercicioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +46,6 @@ public class EjercicioController {
     }
 
     //buscar por x musculo, sea el principal o con que exista en el ejercicio suficiente
-
     @GetMapping("/porMusculo/{musculoId}")
     public ResponseEntity<List<EjercicioResponse>> getByMusculo(@PathVariable Long musculoId) {
         return ResponseEntity.ok(ejercicioService.getByMusculo(musculoId));
