@@ -93,8 +93,7 @@ public class RutinaService {
                 .orElseThrow(() -> new RuntimeException("La rutina no tiene día configurado para hoy"));
         return mapToDiaRutinaResponse(dia);
     }
-
-
+        
     public void deleteRutina(Long idRutina) {
         if (!rutinaRepository.existsById(idRutina)) {
             throw new RuntimeException("La rutina no existe");

@@ -2,6 +2,7 @@ package com.proyectoFinal.gymtracker.Services;
 
 import com.proyectoFinal.gymtracker.DTO.Request.EntrenamientoLogRequest;
 import com.proyectoFinal.gymtracker.DTO.Response.EntrenamientoLogResponse;
+import com.proyectoFinal.gymtracker.DTO.Response.HistorialEjercicioResponse;
 import com.proyectoFinal.gymtracker.DTO.Response.MarcaEjercicioResponse;
 import com.proyectoFinal.gymtracker.Modelo.*;
 import com.proyectoFinal.gymtracker.Repositories.*;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +23,7 @@ public class EntrenamientoLogService {
     private final UsuarioRepository usuarioRepository;
     private final RutinaRepository rutinaRepository;
     private final EjercicioRutinaRepository ejercicioRutinaRepository;
+    private final EjercicioRepository ejercicioRepository;
 
     @Transactional
     public EntrenamientoLogResponse addEntrenamientoLog (@Valid EntrenamientoLogRequest entrenamientoLogRequest) {
@@ -71,6 +74,12 @@ public class EntrenamientoLogService {
 
         return entrenamientosUsuario.stream()
                 .map(this::mapEntrenamientoLogResponse).toList();
+    }
+
+    public Map<String, List<HistorialEjercicioResponse>> getHistorialEjercicio(Long idUsuario, Long idEjercicio) {
+        Ejercicio ejercicio = ejercicioRepository.findById(idEjercicio)
+                .orElseThrow(() -> new RuntimeException("Ejercicio no encontrado"));
+        return Map.of(ejercicio.getNombre(), entrenamientoLogRepository.historialEjercicio(idUsuario, idEjercicio));
     }
 
     // === Metodos auxiliares ===

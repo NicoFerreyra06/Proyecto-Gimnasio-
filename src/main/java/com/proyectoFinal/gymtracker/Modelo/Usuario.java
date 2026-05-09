@@ -51,7 +51,7 @@ public class Usuario {
     @JsonIgnore
     private List<Usuario> amigos;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rutina_activa_id")
     private Rutina rutinaActiva;
 
@@ -73,7 +73,6 @@ public class Usuario {
     // pero guardamos un caché de la racha actual para mostrarla rápido.
     private Integer rachaActualDias;
     private Integer rachaMaximaDias;
-
 
     @Transient //para que hibernatee no lo quiera guardar en db
     public Double getImc() {
