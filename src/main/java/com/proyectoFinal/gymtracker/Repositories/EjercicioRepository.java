@@ -23,4 +23,8 @@ public interface EjercicioRepository extends JpaRepository<Ejercicio,Long> {
             "WHERE mp.id = :musculoId OR ms.id = :musculoId")
     List<Ejercicio> findByMusculo(@Param("musculoId") Long musculoId);
 
+
+    List<Ejercicio> findByNombreContainingIgnoreCase(String nombre);
+
+
 }

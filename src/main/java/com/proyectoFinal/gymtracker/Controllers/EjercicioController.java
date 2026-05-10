@@ -56,5 +56,10 @@ public class EjercicioController {
         return ResponseEntity.ok(ejercicioService.getByMusculoPrincipal(musculoId));
     }
 
+    @GetMapping("/buscar")
+    public ResponseEntity<List<EjercicioResponse>> buscarPorNombre(@RequestParam String nombre) {
+        return ResponseEntity.ok(ejercicioService.buscarPorNombre(nombre));
+    }
+
 
 }

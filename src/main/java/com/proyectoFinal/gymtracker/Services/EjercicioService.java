@@ -83,4 +83,12 @@ public class EjercicioService {
                 .toList();
     }
 
+    public List<EjercicioResponse> buscarPorNombre(String nombre) {
+        return ejercicioRepository.findByNombreContainingIgnoreCase(nombre)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+
 }
