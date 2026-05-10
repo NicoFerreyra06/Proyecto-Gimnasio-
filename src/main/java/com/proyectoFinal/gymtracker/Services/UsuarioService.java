@@ -33,6 +33,7 @@ public class UsuarioService {
                 .peso(usuario.getPeso())
                 .altura(usuario.getAltura())
                 .imc(usuario.getImc())
+                .categoriaImc(calcularCategoriaImc(usuario.getImc()))
                 .rachaActualDias(usuario.getRachaActualDias())
                 .rachaMaximaDias(usuario.getRachaMaximaDias()).build();
     }
@@ -105,4 +106,11 @@ public class UsuarioService {
         return toResponse(usuarioRepository.save(u));
     }
 
+    private String calcularCategoriaImc(Double imc) {
+        if (imc == null) return null;
+        if (imc < 18.5) return "bajo peso";
+        if (imc < 25.0) return "normal";
+        if (imc < 30.0) return "sobrepeso";
+        return "obesidad";
+    }
 }

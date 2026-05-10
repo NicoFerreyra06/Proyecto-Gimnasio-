@@ -19,6 +19,7 @@ public class UsuarioResponse {
     private Double peso;
     private Double altura;
     private Double imc;
+    private String categoriaImc;
     private Integer rachaActualDias;
     private Integer rachaMaximaDias;
 }
