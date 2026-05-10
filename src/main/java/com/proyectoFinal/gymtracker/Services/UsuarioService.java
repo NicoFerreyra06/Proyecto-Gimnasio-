@@ -83,6 +83,17 @@ public class UsuarioService {
         return toResponse(usuario);
     }
 
+    public UsuarioResponse editarPerfil(Long idUsuario, UsuarioRequest request) {
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        usuario.setPeso(request.getPeso());
+        usuario.setAltura(request.getAltura());
+
+        return toResponse(usuarioRepository.save(usuario));
+
+    }
+
     @Transactional
     public UsuarioResponse activarRutina(Long idUsuario, Long idRutina) {
         Usuario u = usuarioRepository.findById(idUsuario)
