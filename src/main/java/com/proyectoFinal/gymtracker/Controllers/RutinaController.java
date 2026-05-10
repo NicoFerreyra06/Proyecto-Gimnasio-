@@ -1,6 +1,7 @@
 package com.proyectoFinal.gymtracker.Controllers;
 
 import com.proyectoFinal.gymtracker.DTO.Request.RutinaRequest;
+import com.proyectoFinal.gymtracker.DTO.Response.DiaRutinaResponse;
 import com.proyectoFinal.gymtracker.DTO.Response.RutinaResponse;
 import com.proyectoFinal.gymtracker.Services.RutinaService;
 import jakarta.validation.Valid;
@@ -38,6 +39,11 @@ public class RutinaController {
     public ResponseEntity<Void> deleteRutinaById(@PathVariable Long idRutina){
         rutinaService.deleteRutina(idRutina);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/{idUsuario}/hoy")
+    public ResponseEntity<DiaRutinaResponse> getDiaActual(@PathVariable Long idUsuario) {
+        return ResponseEntity.ok(rutinaService.getDiaRutinaActual(idUsuario));
     }
 
 }

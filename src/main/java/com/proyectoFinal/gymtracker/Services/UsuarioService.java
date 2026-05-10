@@ -37,7 +37,6 @@ public class UsuarioService {
                 .rachaMaximaDias(usuario.getRachaMaximaDias()).build();
     }
 
-
     public UsuarioResponse registrar(UsuarioRequest usuarioRequest) {
 
         if (usuarioRequest.getEmail() == null || usuarioRequest.getEmail().isEmpty()) {
@@ -75,6 +74,12 @@ public class UsuarioService {
         if (!usuario.getPassword().equals(loginRequest.getPassword())) {
             throw new RuntimeException("Password incorrecta");
         }
+        return toResponse(usuario);
+    }
+
+    public UsuarioResponse getById(Long idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         return toResponse(usuario);
     }
 
