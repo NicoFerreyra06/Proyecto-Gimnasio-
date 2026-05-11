@@ -21,7 +21,16 @@ public class RecordPersonalService {
     private final UsuarioRepository usuarioRepository;
     private final EjercicioRepository ejercicioRepository;
 
-    public RecordPersonal actualizarRecordPersonal(RecordPersonalRequest recordPersonalRequest) {
+    public RecordPersonal toResponse(RecordPersonal recordPersonal){
+        return RecordPersonal.builder()
+                .id(recordPersonal.getId())
+                .usuario(recordPersonal.getUsuario())
+                .pesoMaximo(recordPersonal.getPesoMaximo())
+                .fechaLogro(recordPersonal.getFechaLogro())
+                .build();
+    }
+
+    public RecordPersonal updateRecordPersonal(RecordPersonalRequest recordPersonalRequest) {
         Usuario usuario = usuarioRepository.findById(recordPersonalRequest.getIdUsuario())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
@@ -50,17 +59,23 @@ public class RecordPersonalService {
         return recordPersonalRepository.save(recordPersonal);
     }
 
-    // Muestro el record personal en 1 ejercicio de 1 usuario.
+    // Muestra el record personal en 1 ejercicio de 1 usuario.
     public RecordPersonal getRecordPersonalByEjercicioId(Long usuarioId, Long ejercicioId) {
         return recordPersonalRepository.findByUsuarioIdAndEjercicioId(usuarioId, ejercicioId);
     }
 
-    // Muestro los record personales en todos los ejercicios de 1 usuario.
+    // Muestra los record personales en todos los ejercicios de 1 usuario.
     public List<RecordPersonal> getRecordsPersonalesByUsuarioId(Long usuarioId) {
         return recordPersonalRepository.findRecordPersonalByUsuarioId(usuarioId);
     }
 
-    /* Se podría hacer un metodo que muestre un top de records personales
-     entre todos los usuarios por ejercicio. */
+    // Muestra el ranking de records personales de todos los usuarios.
+    // Falta implementarlo
+    public List<RecordPersonal> getRankingRecordsPersonalesByEjercicioId(Long ejercicioId) {
+        List<RecordPersonal> ranking = recordPersonalRepository.findByEjercicioIdOrderByPesoMaximoDesc(ejercicioId);
 
+        return ranking.stream()
+                .map(this::toResponse)
+                .toList();
+    }
 }

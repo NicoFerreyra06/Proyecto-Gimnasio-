@@ -11,4 +11,6 @@ public interface RecordPersonalRepository extends JpaRepository<RecordPersonal, 
     RecordPersonal findByUsuarioIdAndEjercicioId(Long usuarioId, Long ejercicioId);
 
     List<RecordPersonal> findRecordPersonalByUsuarioId(Long usuarioId);
+
+    List<RecordPersonal> findByEjercicioIdOrderByPesoMaximoDesc(Long ejercicioId);
 }
