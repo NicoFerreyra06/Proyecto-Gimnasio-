@@ -1,14 +1,16 @@
 package com.proyectoFinal.gymtracker.Controllers;
 
 import com.proyectoFinal.gymtracker.DTO.Request.RutinaRequest;
+import com.proyectoFinal.gymtracker.DTO.Response.DiaRutinaResponse;
 import com.proyectoFinal.gymtracker.DTO.Response.RutinaResponse;
-import com.proyectoFinal.gymtracker.Modelo.Rutina;
 import com.proyectoFinal.gymtracker.Services.RutinaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/rutinas")
@@ -28,9 +30,20 @@ public class RutinaController {
         return ResponseEntity.status(HttpStatus.OK).body(rutinaService.getRutinaById(idRutina));
     }
 
+    @GetMapping
+    public ResponseEntity<List<RutinaResponse>> getAllRutinas(){
+        return ResponseEntity.status(HttpStatus.OK).body(rutinaService.getAllRutinas());
+    }
+
     @DeleteMapping("/{idRutina}")
     public ResponseEntity<Void> deleteRutinaById(@PathVariable Long idRutina){
         rutinaService.deleteRutina(idRutina);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @GetMapping("/{idUsuario}/hoy")
+    public ResponseEntity<DiaRutinaResponse> getDiaActual(@PathVariable Long idUsuario) {
+        return ResponseEntity.ok(rutinaService.getDiaRutinaActual(idUsuario));
+    }
+
 }

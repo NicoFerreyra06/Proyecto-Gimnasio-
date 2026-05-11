@@ -4,6 +4,8 @@ import com.proyectoFinal.gymtracker.Enum.Rol;
 import jakarta.persistence.*;
 import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -49,9 +51,12 @@ public class Usuario {
     @JsonIgnore
     private List<Usuario> amigos;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rutina_activa_id")
     private Rutina rutinaActiva;
+
+    private LocalDate rutinaActivaDesde; //necesario para a futuro ver progreso desde que uso tal rutina
+
 
     // Relación para que un usuario pueda tener un entrenador
     @ManyToOne
@@ -68,7 +73,6 @@ public class Usuario {
     // pero guardamos un caché de la racha actual para mostrarla rápido.
     private Integer rachaActualDias;
     private Integer rachaMaximaDias;
-
 
     @Transient //para que hibernatee no lo quiera guardar en db
     public Double getImc() {

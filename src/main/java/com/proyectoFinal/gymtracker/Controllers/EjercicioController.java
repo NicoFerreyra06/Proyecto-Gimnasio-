@@ -3,7 +3,6 @@ package com.proyectoFinal.gymtracker.Controllers;
 
 import com.proyectoFinal.gymtracker.DTO.Request.EjercicioRequest;
 import com.proyectoFinal.gymtracker.DTO.Response.EjercicioResponse;
-import com.proyectoFinal.gymtracker.Modelo.Ejercicio;
 import com.proyectoFinal.gymtracker.Services.EjercicioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +18,7 @@ import java.util.List;
 public class EjercicioController {
 
     private final EjercicioService ejercicioService;
+
     @PostMapping
     public ResponseEntity<EjercicioResponse> addEjercicio(@Valid @RequestBody EjercicioRequest ejercicio){
         return ResponseEntity.status(HttpStatus.CREATED).body(ejercicioService.addEjercicio(ejercicio));
@@ -46,7 +46,6 @@ public class EjercicioController {
     }
 
     //buscar por x musculo, sea el principal o con que exista en el ejercicio suficiente
-
     @GetMapping("/porMusculo/{musculoId}")
     public ResponseEntity<List<EjercicioResponse>> getByMusculo(@PathVariable Long musculoId) {
         return ResponseEntity.ok(ejercicioService.getByMusculo(musculoId));
@@ -55,6 +54,11 @@ public class EjercicioController {
     @GetMapping("/porMusculoPrincipal/{musculoId}")
     public ResponseEntity<List<EjercicioResponse>> getByMusculoPrincipal(@PathVariable Long musculoId) {
         return ResponseEntity.ok(ejercicioService.getByMusculoPrincipal(musculoId));
+    }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<List<EjercicioResponse>> buscarPorNombre(@RequestParam String nombre) {
+        return ResponseEntity.ok(ejercicioService.buscarPorNombre(nombre));
     }
 
 
