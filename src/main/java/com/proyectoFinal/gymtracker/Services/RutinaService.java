@@ -115,7 +115,7 @@ public class RutinaService {
                 .creadorId(rutina.getCreador() != null ? rutina.getCreador().getId() : null)
                 .nombre(rutina.getNombre())
                 .tokenCompartir(rutina.getTokenCompartir())
-                .precio(rutina.getPrecio() > 0 ? rutina.getPrecio() : null)
+                .precio(rutina.getPrecio() != null && rutina.getPrecio() > 0 ? rutina.getPrecio() : null)
                 .diaRutinas(rutina.getDias() != null ? rutina.getDias().stream()
                         .map(this::mapToDiaRutinaResponse).toList() : List.of())
                 .build();
