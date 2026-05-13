@@ -14,7 +14,7 @@ import lombok.Setter;
 public class LoginRequest {
 
     @Email
-    @NotBlank
+    @NotBlank(message = "Debe proporcionar un email")
     private String email;
     @NotBlank(message = "La contrasenia no puede estar vacía")
     private String password;

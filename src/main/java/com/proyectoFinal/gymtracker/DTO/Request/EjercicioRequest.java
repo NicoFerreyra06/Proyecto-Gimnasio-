@@ -1,9 +1,6 @@
 package com.proyectoFinal.gymtracker.DTO.Request;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +17,7 @@ public class EjercicioRequest {
     private String nombre;
     @Size(max = 100, message = "La descripción no puede superar los 100 caracteres")
     private String descripcion;
-    @NotNull
+    @NotEmpty
     private List<Long> musculoPrincipalId;
     private List<Long> musculoSecundarioId;
 }

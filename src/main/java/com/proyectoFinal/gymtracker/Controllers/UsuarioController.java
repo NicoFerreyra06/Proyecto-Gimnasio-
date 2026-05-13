@@ -34,7 +34,8 @@ public class UsuarioController {
     }
 
     @PutMapping("/{idUsuario}")
-    public ResponseEntity<UsuarioResponse> editarPerfil(@PathVariable Long idUsuario, @RequestBody UsuarioRequest request) {
+    public ResponseEntity<UsuarioResponse> editarPerfil(@PathVariable Long idUsuario,
+                                                        @Valid @RequestBody UsuarioRequest request) {
         return ResponseEntity.ok(usuarioService.editarPerfil(idUsuario, request));
     } //se va a recibir todo el usuario solo para tocar altura y peso
       //si les parece bien dejarlo asi, sino hay que crear otra clase request solo con 2 campos
