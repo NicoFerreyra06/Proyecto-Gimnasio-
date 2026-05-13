@@ -26,7 +26,7 @@ public class EntrenamientoLogService {
     private final EjercicioRepository ejercicioRepository;
 
     @Transactional
-    public EntrenamientoLogResponse addEntrenamientoLog (@Valid EntrenamientoLogRequest entrenamientoLogRequest) {
+    public EntrenamientoLogResponse addEntrenamientoLog (EntrenamientoLogRequest entrenamientoLogRequest) {
         Usuario user = usuarioRepository.findById(entrenamientoLogRequest.getIdUsuario())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
@@ -53,6 +53,42 @@ public class EntrenamientoLogService {
         EntrenamientoLog entrenamientoLogSaved = entrenamientoLogRepository.save(entrenamientoLog);
 
         return mapEntrenamientoLogResponse(entrenamientoLogSaved);
+    }
+
+    @Transactional
+    public EntrenamientoLogResponse updateEntrenamiento(EntrenamientoLogRequest entrenamientoLogRequest,
+                                                        Long idEntrenamiento) {
+
+        EntrenamientoLog entrenamientoExistente = entrenamientoLogRepository.findById(idEntrenamiento)
+                .orElseThrow(() -> new RuntimeException("Entrenamiento no encontrado"));
+
+        Rutina rutina = rutinaRepository.findById(entrenamientoLogRequest.getIdRutina())
+                        .orElseThrow(() -> new RuntimeException("Rutina no encontrada"));
+
+        Usuario user = usuarioRepository.findById(entrenamientoLogRequest.getIdUsuario())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        entrenamientoExistente.setUsuario(user);
+        entrenamientoExistente.setRutinaEjecutada(rutina);
+
+        entrenamientoExistente.getMarcas().clear();
+
+        List<MarcaEjercicio> nuevasMarcas = entrenamientoLogRequest.getMarcasEjercicio()
+                .stream().map(marcaEjercicioRequest -> {
+                    EjercicioRutina ejercicioRutina = ejercicioRutinaRepository.findById(marcaEjercicioRequest.getEjercicioRutinaId())
+                            .orElseThrow(() -> new RuntimeException("Ejercicio no encontrado"));
+
+                    return MarcaEjercicio.builder()
+                            .pesoLevantado(marcaEjercicioRequest.getPesoLevantado())
+                            .repeticionesLogradas(marcaEjercicioRequest.getRepeticionesLogradas())
+                            .entrenamientoLog(entrenamientoExistente)
+                            .ejercicioRutina(ejercicioRutina).build();
+                }).toList();
+
+        entrenamientoExistente.getMarcas().addAll(nuevasMarcas);
+        EntrenamientoLog entrenamientoSaved = entrenamientoLogRepository.save(entrenamientoExistente);
+
+        return mapEntrenamientoLogResponse(entrenamientoSaved);
     }
 
     public EntrenamientoLogResponse getEntrenamientoLogById (Long idEntrenamientoLog) {

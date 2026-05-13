@@ -25,6 +25,13 @@ public class EntrenamientoLogController {
                 .body(entrenamientoLogService.addEntrenamientoLog(entrenamientoLogRequest));
     }
 
+    @PutMapping("/{idEntrenamiento}")
+    public ResponseEntity<EntrenamientoLogResponse> updateEntrenamiento(@RequestBody EntrenamientoLogRequest entrenamientoLogRequest,
+                                                                        @PathVariable Long idEntrenamiento){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(entrenamientoLogService.updateEntrenamiento(entrenamientoLogRequest, idEntrenamiento));
+    }
+
     @GetMapping("/{idEntrenamiento}")
     public ResponseEntity<EntrenamientoLogResponse> getEntrenamientoLogById(@PathVariable Long idEntrenamiento){
         return ResponseEntity.status(HttpStatus.OK)
