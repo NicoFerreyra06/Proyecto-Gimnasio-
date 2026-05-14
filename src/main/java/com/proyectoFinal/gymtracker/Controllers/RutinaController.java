@@ -25,6 +25,12 @@ public class RutinaController {
                 .body(rutinaService.createRutina(rutinaRequest));
     }
 
+    @PutMapping("/{idRutina}")
+    public ResponseEntity<RutinaResponse> updateRutina(@Valid @RequestBody RutinaRequest rutinaRequest,
+                                                       @PathVariable Long idRutina){
+        return ResponseEntity.status(HttpStatus.OK).body(rutinaService.updateRutina(rutinaRequest,idRutina));
+    }
+
     @GetMapping("/{idRutina}")
     public ResponseEntity<RutinaResponse> getRutinaById(@PathVariable Long idRutina){
         return ResponseEntity.status(HttpStatus.OK).body(rutinaService.getRutinaById(idRutina));

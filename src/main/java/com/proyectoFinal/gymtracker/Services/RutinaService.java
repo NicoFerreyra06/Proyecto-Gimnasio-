@@ -1,5 +1,6 @@
 package com.proyectoFinal.gymtracker.Services;
 
+import com.proyectoFinal.gymtracker.DTO.Request.DiaRutinaRequest;
 import com.proyectoFinal.gymtracker.DTO.Request.RutinaRequest;
 import com.proyectoFinal.gymtracker.DTO.Response.DiaRutinaResponse;
 import com.proyectoFinal.gymtracker.DTO.Response.EjercicioRutinaResponse;
@@ -70,6 +71,51 @@ public class RutinaService {
         }
         Rutina rutinaSaved = rutinaRepository.save(rutina);
         return mapRutinaResponse(rutinaSaved);
+    }
+
+    @Transactional
+    public RutinaResponse updateRutina(RutinaRequest rutinaRequest, Long idRutina){
+        Usuario usuario = usuarioRepository.findById(rutinaRequest.getCreadorId())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        Rutina rutinaExistente = rutinaRepository.findById(idRutina)
+                .orElseThrow(()-> new RuntimeException("Rutina no encontrada"));
+
+        rutinaExistente.setCreador(usuario);
+        rutinaExistente.setNombre(rutinaRequest.getNombre());
+
+        validarPrecioYrol(rutinaRequest,usuario);
+
+        rutinaExistente.setPrecio(rutinaRequest.getPrecio());
+        rutinaExistente.getDias().clear();
+
+        List<DiaRutina> nuevosDias = rutinaRequest.getDias().stream()
+                .map(diaRutinaRequest -> {
+                    DiaRutina dia = DiaRutina.builder()
+                            .diaDeLaSemana(diaRutinaRequest.getDiaDeLaSemana())
+                            .rutina(rutinaExistente).build();
+
+                    if (diaRutinaRequest.getEjercicios() != null) {
+                        List<EjercicioRutina> ejercicioRutinas = diaRutinaRequest.getEjercicios()
+                                .stream().map(ejercicioRutinaRequest -> {
+                                    Ejercicio ejercicio = ejercicioRepository.findById(ejercicioRutinaRequest.getEjercicioId())
+                                            .orElseThrow(() -> new RuntimeException("Ejercicio no encontrado"));
+
+                                    return EjercicioRutina.builder()
+                                            .dia(dia)
+                                            .ejercicio(ejercicio)
+                                            .series(ejercicioRutinaRequest.getSeries())
+                                            .repeticiones(ejercicioRutinaRequest.getRepeticiones()).build();
+                                }).toList();
+
+                        dia.setEjercicios(ejercicioRutinas);
+                    }
+                    return dia;
+                }).toList();
+        rutinaExistente.getDias().addAll(nuevosDias);
+
+        Rutina rutinaSaved = rutinaRepository.save(rutinaExistente);
+        return  mapRutinaResponse(rutinaSaved);
     }
 
     public RutinaResponse getRutinaById(Long idRutina) {
