@@ -118,6 +118,10 @@ public class EntrenamientoLogService {
         return Map.of(ejercicio.getNombre(), entrenamientoLogRepository.historialEjercicio(idUsuario, idEjercicio));
     }
 
+    public void deleteEntrenamientoLog (Long idEntrenamientoLog) {
+        entrenamientoLogRepository.deleteById(idEntrenamientoLog);
+    }
+
     // === Metodos auxiliares ===
 
     private EntrenamientoLogResponse mapEntrenamientoLogResponse(EntrenamientoLog entrenamientoLog) {
